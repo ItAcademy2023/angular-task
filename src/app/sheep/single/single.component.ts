@@ -10,12 +10,19 @@ import { SheepDetailed } from 'src/app/types';
   styleUrls: ['./single.component.scss'],
 })
 export class SingleComponent {
-  sheep$?: Observable<SheepDetailed>;
+  sheep$?: Observable<SheepDetailed & { img: string }>;
   constructor(private service: SheepService, private route: ActivatedRoute) {
     //"Simple" solution
     const name = this.route.snapshot.paramMap.get('name');
     if (name !== null) {
-      this.sheep$ = this.service.findSheep(name);
+      this.sheep$ = this.service
+        .findSheep(name)
+        .pipe(
+          map((sheep) => ({
+            ...sheep,
+            img: `assets/${sheep.name.toLowerCase()}-img.jpg`,
+          }))
+        );
     }
 
     //Observable solution
