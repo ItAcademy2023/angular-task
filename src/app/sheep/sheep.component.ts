@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
+import { SheepService } from '../sheep.service';
 import { Sheep } from '../types';
 
 @Component({
@@ -8,8 +9,8 @@ import { Sheep } from '../types';
   styleUrls: ['./sheep.component.scss'],
 })
 export class SheepComponent {
-  sheep: Sheep[];
-  constructor() {
-    this.sheep = [{ title: 'I am a sheep', name: 'Wooly', tagline: 'Baaaaa' }];
+  sheep$: Observable<Sheep[]>;
+  constructor(private sheepService: SheepService) {
+    this.sheep$ = this.sheepService.gatherFlock();
   }
 }
